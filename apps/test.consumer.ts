@@ -9,7 +9,11 @@ export class TestConsumer implements OnApplicationShutdown {
 
   async onModuleInit() {
     await this.consumerService.consume(
-      { topic: 'login-user' },
+      [
+        { topic: 'login-user', fromBeginning: true },
+        { topic: 'signup-user', fromBeginning: true },
+        { topic: 'test', fromBeginning: true },
+      ],
 
       {
         eachMessage: async ({ topic, partition, message }) => {

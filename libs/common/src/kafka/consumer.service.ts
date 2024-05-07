@@ -14,10 +14,13 @@ export class ConsumerService implements OnApplicationShutdown {
 
   private readonly consumers: Consumer[] = [];
 
-  async consume(topic: ConsumerSubscribeTopic, config: ConsumerRunConfig) {
+  async consume(topics: ConsumerSubscribeTopic[], config: ConsumerRunConfig) {
     const consumer = this.kafka.consumer({ groupId: 'authentication-group' });
     await consumer.connect();
-    await consumer.subscribe(topic);
+    await consumer.connect();
+    for (const topic of topics) {
+      await consumer.subscribe(topic);
+    }
     await consumer.run(config);
     this.consumers.push(consumer);
   }
