@@ -20,8 +20,8 @@ export class User extends Document {
   @Prop({ default: '' })
   company: string;
 
-  @Prop()
-  address: string;
+  @Prop([String])
+  addresses: string[];
 
   @Prop()
   password: string;

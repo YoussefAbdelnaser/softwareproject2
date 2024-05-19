@@ -1,10 +1,24 @@
-import { NestFactory } from '@nestjs/core';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ProfileModule } from './profile.module';
+import { ProfileConsumerService } from './profile-consumer.service';
 
-async function bootstrap() {
-  const app = await NestFactory.create(ProfileModule);
-  await app.listen(3004);
+@Module({
+  imports: [ProfileModule],
+})
+export class AppModule implements OnModuleInit {
+  constructor(
+    private readonly profileConsumerService: ProfileConsumerService,
+  ) {}
+
+  async onModuleInit() {
+    await this.profileConsumerService.consume(
+      [
+        { topic: 'edit-account' },
+        { topic: 'create-address' },
+        { topic: 'edit-address' },
+        { topic: 'edit-password' },
+      ],
+      { eachMessage: async ({ topic, partition, message }) => {} },
+    );
+  }
 }
-bootstrap().then(() => {
-  console.log('Profile service started');
-});

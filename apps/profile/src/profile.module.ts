@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ProfileController } from './profile.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from '../../authentication/schemas/user.schema';
 import { ProfileService } from './profile.service';
+import { ProfileController } from './profile.controller';
+import { ProfileConsumerService } from './profile-consumer.service'; // Import ProfileConsumerService
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+  ],
+  providers: [ProfileService, ProfileConsumerService], // Register ProfileConsumerService
   controllers: [ProfileController],
-  providers: [ProfileService],
 })
 export class ProfileModule {}
